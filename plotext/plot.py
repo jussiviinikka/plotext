@@ -46,6 +46,8 @@ class _parameters():
         self.fillx = []
         self.filly = []
 
+        self.output_file = _sys.stdout
+
 class _constants():
     def __init__(self):
         self.default_marker = "•"
@@ -582,7 +584,7 @@ def _xaxis():
             if c == par.width-1:
                 axis[c] = "┤" if par.frame else "┬"
                 upper_axis[c] = "┐"
-                print(c)
+                # print(c)
     axis = [_add_color(el, par.ticks_color, par.axes_color) for el in axis]
     upper_axis = [_add_color(el, par.ticks_color, par.axes_color) for el in upper_axis]
     labels = [_add_color(el, par.ticks_color, par.axes_color) for el in labels]
@@ -778,7 +780,9 @@ def _arange(start, stop, step = 1):
     return res
 
 def _write(string):
-    _sys.stdout.write(string)
+    print(string, file=par.output_file)
+    par.output_file.flush()
+    #_sys.stdout.write(string)
 
 def _check_path(path):
     home = _os.path.expanduser("~") 
@@ -1079,6 +1083,13 @@ def docstrings():
         print()
         print(name)
         print(fun.__doc__)
+
+def set_output_file(ofile):
+    """\nSets the output file (default sys.stdout)\n"""
+    par.output_file = ofile
+
+def check_ofile():
+    print(par.output_file)
 
 if __name__ == "__main__":
     pass
